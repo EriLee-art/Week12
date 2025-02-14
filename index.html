@@ -3,14 +3,14 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>CRD Application</title>
+		<title>Calorie Notes</title>
 		<link
 			rel="stylesheet"
 			href="node_modules/bootstrap/dist/css/bootstrap.css"
 		/>
 		<link rel="stylesheet" href="styles.css" />
 	</head>
-	<body>
+	<body class="container">
 		<!--
         Coding Steps:
             
@@ -23,7 +23,48 @@
             Use Bootstrap and/or CSS to style your project
         -->
 
-		<form class="form"></form>
+		<div class="container">
+			<header class="fs-1 text-center m-5">
+				<h1>Calorie Notes</h1>
+			</header>
+		</div>
+
+		<!--Form-->
+			<form>
+				<div class="form-group m-3">
+					<label for="mealTime" class="form-label">Meal of The Day</label><br />
+					<select class="form-control" id="mealTime">
+						<option>--</option>
+						<option>Breakfast</option>
+						<option>Lunch</option>
+						<option>Dinner</option>
+					</select>
+				</div>
+				<div class="form-group m-3">
+					<label for="foodItem" class="form-label">Food Item</label><br />
+					<input
+						type="text"
+						class="form-control"
+						id="foodItem"
+						placeholder="Food Item"
+					/>
+				</div>
+				<div class="form-group m-3">
+					<label for="cals" class="form-label">Calories</label>
+					<input
+						type="text"
+						class="form-control"
+						id="cals"
+						placeholder="Calories"
+					/>
+				</div>
+				<button type="submit" id="submitBtn" class="btn btn-primary ms-3">
+					Submit
+				</button>
+			</form>
+		<br />
+
+		<div id="notes" class="container mt-5"></div>
 
 		<!-- Scripts -->
 		<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
