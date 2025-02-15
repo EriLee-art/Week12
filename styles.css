@@ -1,0 +1,19 @@
+body {
+    background-color: rgb(250,225,152);
+}
+
+.form-control {
+    background-color: rgb(206,217,97);
+}
+
+#mealNotes {
+    background-color: rgb(250,242,224);
+}
+
+#submit-button {
+    background-color: rgb(159,176,97);
+}
+
+#delete-button {
+    background-color: rgb(250,111,68);
+}

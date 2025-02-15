@@ -8,11 +8,15 @@
             Include a way to get entities from the API and display them
             You do NOT need update, but you can add it if you'd like
             Use Bootstrap and/or CSS to style your project
- */
+*/
 
+// Array used to display and sync data between the db.json and web page
 let mealList = [];
+
+// Used in the rendering of meals
 const notesContainer = document.getElementById(`notes`);
 
+// Renders all the meals from mealList
 function renderNotesList() {
     notesContainer.innerHTML = "";
 
@@ -20,16 +24,16 @@ function renderNotesList() {
     formDefault();
 }
 
-// Renders Notes from the notesList and displays them
-
+// Renders the individual meals from the mealList
 function renderNotes(meal) {
     const mealDiv = document.createElement("div");
-    mealDiv.className = "bg-light mb-3 p-4"
     mealDiv.innerHTML = `
-        <h5>${meal.id}) ${meal.foodItem} - ${meal.mealTime}</h5>
+    <div id="mealNotes" class="mb-3 p-4">
+        <h5 class="mb-3">${meal.id}) ${meal.foodItem} - ${meal.mealTime}</h5>
         <p>${meal.servingSize} Per Serving</p>
         <p>${meal.calories} Calories</p>
-        <button id="delete-button" class="btn btn-danger ms-3">Delete</button>`
+        <button id="delete-button" class="btn btn-danger ms-3">Delete</button>
+    </div>`
 
     mealDiv.querySelector(`#delete-button`).addEventListener(`click`, async () => {
         await deleteNotes(meal.id);
@@ -42,8 +46,8 @@ function renderNotes(meal) {
     return mealDiv
 }
 
-// Creates Notes
-function submitToDatabase(event) {
+// Creates meal
+async function submitToDatabase(event) {
     event.preventDefault();
     const mealTime = document.getElementById(`mealTime`).value;
     const foodItem = document.getElementById(`foodItem`).value;
@@ -57,25 +61,25 @@ function submitToDatabase(event) {
         calories: parseInt(calories)
     };
     
-    postNotes(meal);
+    await postNotes(meal);
     renderNotesList();
 }
 
 
-// Fetches Notes
+// Fetches meals
 async function getNotes() {
     const response = await fetch("http://localhost:3000/meal");
     return response.json();
 }
 
-// Deletes Notes
+// Deletes meals
 async function deleteNotes(idToDelete) {
     await fetch(`http://localhost:3000/meal/` + idToDelete, {
         method: `DELETE`
     })
 }
 
-// Posts Notes
+// Posts meals
 async function postNotes(noteMeal) {
     const response = await fetch("http://localhost:3000/meal", {
         method: "POST",
@@ -85,7 +89,7 @@ async function postNotes(noteMeal) {
     return response.json();
 }
 
-// Return form to default
+// Returns form to default
 const formDefault = () => {
     document.getElementById(`notes-form`).reset();
 }

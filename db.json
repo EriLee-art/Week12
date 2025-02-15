@@ -20,13 +20,6 @@
       "servingSize": "1 Small Plate",
       "calories": 361,
       "id": 3
-    },
-    {
-      "mealTime": "Breakfast",
-      "foodItem": "Pancakes",
-      "servingSize": "1",
-      "calories": 180,
-      "id": 4
     }
   ]
 }
