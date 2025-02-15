@@ -30,7 +30,7 @@
 		</div>
 
 		<!--Form-->
-			<form>
+			<form id="notes-form">
 				<div class="form-group m-3">
 					<label for="mealTime" class="form-label">Meal of The Day</label><br />
 					<select class="form-control" id="mealTime">
@@ -50,6 +50,15 @@
 					/>
 				</div>
 				<div class="form-group m-3">
+					<label for="serving" class="form-label">Serving Size</label><br />
+					<input
+						type="text"
+						class="form-control"
+						id="serving"
+						placeholder="tbsp/pieces/etc"
+					/>
+				</div>
+				<div class="form-group m-3">
 					<label for="cals" class="form-label">Calories</label>
 					<input
 						type="text"
@@ -58,7 +67,7 @@
 						placeholder="Calories"
 					/>
 				</div>
-				<button type="submit" id="submitBtn" class="btn btn-primary ms-3">
+				<button class="btn btn-primary ms-3" onclick="submitToDatabase(event)">
 					Submit
 				</button>
 			</form>

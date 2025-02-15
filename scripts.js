@@ -10,52 +10,91 @@
             Use Bootstrap and/or CSS to style your project
  */
 
-const submitBtn = document.getElementById(`submitBtn`);
+let mealList = [];
 const notesContainer = document.getElementById(`notes`);
 
+function renderNotesList() {
+    notesContainer.innerHTML = "";
+
+    mealList.map(renderNotes).forEach(div => notesContainer.appendChild(div));
+    formDefault();
+}
+
+// Renders Notes from the notesList and displays them
+
+function renderNotes(meal) {
+    const mealDiv = document.createElement("div");
+    mealDiv.className = "bg-light mb-3 p-4"
+    mealDiv.innerHTML = `
+        <h5>${meal.id}) ${meal.foodItem} - ${meal.mealTime}</h5>
+        <p>${meal.servingSize} Per Serving</p>
+        <p>${meal.calories} Calories</p>
+        <button id="delete-button" class="btn btn-danger ms-3">Delete</button>`
+
+    mealDiv.querySelector(`#delete-button`).addEventListener(`click`, async () => {
+        await deleteNotes(meal.id);
+
+        const indexToDelete = mealList.indexOf(meal);
+        mealList.splice(indexToDelete, 1);
+
+        renderNotesList();
+    })
+    return mealDiv
+}
+
 // Creates Notes
-submitBtn.addEventListener(`click`, (event) => {
+function submitToDatabase(event) {
     event.preventDefault();
     const mealTime = document.getElementById(`mealTime`).value;
     const foodItem = document.getElementById(`foodItem`).value;
+    const servingSize = document.getElementById(`serving`).value;
     const calories = document.getElementById(`cals`).value;
 
-    const meal = { mealTime: mealTime, foodItem: foodItem, calories: calories };
-    async () => {
-        await fetch("http://localhost:3000/meal/", {
-            method: "POST",
-            headers: {"Content-Type": "application/JSON"},
-            body: JSON.stringify(meal)
-        })
-        getNotes();
-    }
-})
+    const meal = { 
+        mealTime: mealTime, 
+        foodItem: foodItem, 
+        servingSize: servingSize,
+        calories: parseInt(calories)
+    };
+    
+    postNotes(meal);
+    renderNotesList();
+}
+
+
+// Fetches Notes
+async function getNotes() {
+    const response = await fetch("http://localhost:3000/meal");
+    return response.json();
+}
 
 // Deletes Notes
-async function deleteNotes(id) {
-    await fetch(`http://localhost:3000/meal/${id}`, {
+async function deleteNotes(idToDelete) {
+    await fetch(`http://localhost:3000/meal/` + idToDelete, {
         method: `DELETE`
     })
 }
 
-// Grabs Notes from the Database and displays them
-
-async function getNotes() {
-    const response = await fetch("http://localhost:3000/meal");
-    const notes = await response.json();
-
-        notesContainer.innerHTML = notes.map(meal =>
-            `<div>${meal.mealTime}</div>
-            <div>${meal.foodItem}</div>
-            <div>${meal.calories} Calories</div>
-            <button class="btn btn-danger ms-3">Delete</button>`);
-
-        notesContainer.querySelector(`.btn-danger`).addEventListener(`click`, () => {
-            deleteNotes(meal.id);
-
-            const indexToDelete = notes.indexOf(meal);
-            notes.splice(indexToDelete, 1);
+// Posts Notes
+async function postNotes(noteMeal) {
+    const response = await fetch("http://localhost:3000/meal", {
+        method: "POST",
+        headers: { "Content-Type": "application/json"},
+        body: JSON.stringify(noteMeal)
     })
+    return response.json();
 }
 
-getNotes();
+// Return form to default
+const formDefault = () => {
+    document.getElementById(`notes-form`).reset();
+}
+
+// Application startup
+async function startUp() {
+    renderNotesList();
+    mealList = await getNotes();
+    renderNotesList();
+}
+
+startUp();
